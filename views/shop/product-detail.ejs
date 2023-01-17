@@ -9,8 +9,8 @@
             <div>
                 <img src="<%=product.imageUrl%>" alt="<%=product.title%>">
             </div>
-            <h2><%=product.totalPrice%></h2>
-            <p><%=product.Description%></p>
+            <h2>$<%=product.price%></h2>
+            <p><%=product.description%></p>
             <%- include('../includes/add-to-cart.ejs') %>
         </main>
         <%- include('../includes/end.ejs') %>
