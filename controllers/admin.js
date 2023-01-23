@@ -30,7 +30,8 @@ exports.postAddProduct = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
-  Product.findAll()
+  // Product.findAll()
+  req.user.getProduct()
   .then(products=>{
     res.render('admin/products', {
       prods: products,

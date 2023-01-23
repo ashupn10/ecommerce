@@ -4,6 +4,8 @@ const bodyParser = require('body-parser');
 const sequelize=require('./util/database');
 const errorController = require('./controllers/error');
 const product=require('./models/product');
+const cart=require('./models/cart');
+const cartItem=require('./models/cart-item');
 const user=require('./models/user');
 
 const app = express();
@@ -33,7 +35,13 @@ app.use(errorController.get404);
 product.belongsTo(user,{constraints:true,onDelete:'CASCADE'});
 user.hasMany(product);
 
+user.hasOne(cart);
+cart.belongsTo(user);
+cart.belongsToMany(product,{through:cartItem});
+product.belongsToMany(cart,{through:cartItem});
+
 sequelize.sync()
+// sequelize.sync({force:true})
 .then(result=>{
     return user.findByPk(1);
 })
@@ -42,6 +50,9 @@ sequelize.sync()
         return user.create({UserName:'test@g',email:'test',password:'password'});
     }
     return User;
+})
+.then(user=>{
+    user.createCart();
 })
 .then(()=>{
     app.listen(8001);
